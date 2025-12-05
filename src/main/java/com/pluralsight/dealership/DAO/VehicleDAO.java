@@ -75,11 +75,12 @@ public class VehicleDAO {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         return vehicles;
     }
+
     public List<Vehicle> getVehiclesByYear(int min, int max) {
         List<Vehicle> vehicles = new ArrayList<>();
 
@@ -103,6 +104,7 @@ public class VehicleDAO {
         }
         return vehicles;
     }
+
     public List<Vehicle> getVehiclesByColor(String color) {
         List<Vehicle> vehicles = new ArrayList<>();
 
@@ -122,6 +124,30 @@ public class VehicleDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return vehicles;
+    }
+
+    public List<Vehicle> getVehiclesByMileage(int min, int max) {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        String query = "SELECT * FROM vehicles WHERE odometer BETWEEN ? AND ?";
+
+        try (Connection c = bds.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+
+            ps.setInt(1, min);
+            ps.setInt(2, max);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Vehicle v = newVehicleFromResults(rs);
+                vehicles.add(v);
+            }
+
+        } catch (SQLException e) {
+        e.printStackTrace();
         }
         return vehicles;
     }
