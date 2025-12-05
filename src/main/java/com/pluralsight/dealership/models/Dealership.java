@@ -1,23 +1,23 @@
 package com.pluralsight.dealership.models;
 
-import java.util.ArrayList;
+
+import com.pluralsight.dealership.DAO.VehicleDAO;
+
 import java.util.List;
 
 public class Dealership {
 
 // knows how to search; runs logic and returns results to the UI so it can display them
 
-        private String dealershipName, address, phoneNum;
-        private ArrayList<Vehicle> inventory;
+    private String dealershipName, address, phoneNum;
+    private VehicleDAO vehicleDAO;
 
-        public Dealership(String dealershipName, String address, String phoneNum) {
-            this.inventory = new ArrayList<>();
-
-            this.dealershipName = dealershipName;
-            this.address = address;
-            this.phoneNum = phoneNum;
-
-        }
+    public Dealership(String dealershipName, String address, String phoneNum) {
+        this.dealershipName = dealershipName;
+        this.address = address;
+        this.phoneNum = phoneNum;
+        this.vehicleDAO = new VehicleDAO();
+    }
 
         public String getDealershipName() {
             return dealershipName;
@@ -31,79 +31,32 @@ public class Dealership {
             return phoneNum;
         }
 
-        public List<Vehicle> getVehiclesByPrice(double min, double max) {
-            List<Vehicle> results = new ArrayList<>();
+    public List<Vehicle> getVehiclesByPrice(double min, double max) {
+        return vehicleDAO.getVehiclesByPrice(min, max);
+    }
 
-            for (Vehicle vehicle : inventory) {
-                if (vehicle.getPrice() >= min && vehicle.getPrice() <= max) {
-                    results.add(vehicle);
-                }
-            }
-            return results;
-        }
-
-        public List<Vehicle> getVehiclesByMakeModel(String make, String model) {
-            List<Vehicle> results = new ArrayList<>();
-
-            for (Vehicle vehicle : inventory) {
-                if (vehicle.getMake().equalsIgnoreCase(make) && vehicle.getModel().equalsIgnoreCase(model)) {
-                    results.add(vehicle);
-                }
-            }
-
-            return results;
+    public List<Vehicle> getVehiclesByMakeModel(String make, String model) {
+        return vehicleDAO.getVehiclesByMakeModel(make, model);
         }
 
         public List<Vehicle> getVehiclesByYear(int min, int max) {
-            List<Vehicle> results = new ArrayList<>();
-
-            for (Vehicle vehicle : inventory) {
-                if (vehicle.getYear() >= min && vehicle.getYear() <= max) {
-                    results.add(vehicle);
-                }
-            }
-
-            return results;
+            return vehicleDAO.getVehiclesByYear(min, max);
         }
 
         public List<Vehicle> getVehiclesByColor(String color) {
-            List<Vehicle> results = new ArrayList<>();
-
-            for (Vehicle vehicle : inventory) {
-                if (vehicle.getColor().equalsIgnoreCase(color)) {
-                    results.add(vehicle);
-                }
-            }
-
-            return results;
+            return vehicleDAO.getVehiclesByColor(color);
         }
 
         public List<Vehicle> getVehiclesByMileage(int min, int max) {
-            List<Vehicle> results = new ArrayList<>();
-
-            for (Vehicle vehicle : inventory) {
-                if (vehicle.getOdometer() >= min && vehicle.getOdometer() <= max) {
-                    results.add(vehicle);
-                }
-            }
-            return results;
+            return vehicleDAO.getVehiclesByMileage(min, max);
         }
 
         public List<Vehicle> getVehiclesByType(String vehicleType) {
-            List<Vehicle> results = new ArrayList<>();
-
-            for (Vehicle vehicle : inventory) {
-                if (vehicle.getVehicleType().equalsIgnoreCase(vehicleType)) {
-                    results.add(vehicle);
-                }
-            }
-
-            return results;
+            return vehicleDAO.getVehiclesByType(vehicleType);
         }
 
         public List<Vehicle> getAllVehicles() {
-
-            return inventory;
+            return vehicleDAO.getAllVehicles();
         }
 
         public void addVehicle(Vehicle vehicle) {
