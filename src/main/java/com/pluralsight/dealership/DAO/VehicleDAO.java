@@ -173,6 +173,26 @@ public class VehicleDAO {
             e.printStackTrace();
         }
         return vehicles;
+    }
 
+    public List<Vehicle> getAllVehicles() {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        String query = "SELECT * FROM vehicles";
+
+        try (Connection c = bds.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Vehicle v = newVehicleFromResults(rs);
+                vehicles.add(v);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vehicles;
     }
 }
