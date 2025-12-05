@@ -80,4 +80,28 @@ public class VehicleDAO {
 
         return vehicles;
     }
+    public List<Vehicle> getVehiclesByYear(int min, int max) {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        String query = "SELECT * FROM vehicles WHERE year BETWEEN ? AND ?";
+
+        try (Connection c = bds.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+
+            ps.setInt(1, min);
+            ps.setInt(2, max);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Vehicle v = newVehicleFromResults(rs);
+                vehicles.add(v);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return vehicles;
+    }
 }
