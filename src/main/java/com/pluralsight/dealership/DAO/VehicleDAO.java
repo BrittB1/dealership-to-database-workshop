@@ -147,8 +147,32 @@ public class VehicleDAO {
             }
 
         } catch (SQLException e) {
-        e.printStackTrace();
+            e.printStackTrace();
         }
         return vehicles;
+    }
+
+    public List<Vehicle> getVehiclesByType(String type) {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        String query = "SELECT * FROM vehicles WHERE vehicle_type = ?";
+
+        try (Connection c = bds.getConnection();
+             PreparedStatement ps = c.prepareStatement(query)) {
+
+            ps.setString(1, type);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Vehicle v = newVehicleFromResults(rs);
+                vehicles.add(v);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vehicles;
+
     }
 }
